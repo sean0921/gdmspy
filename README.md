@@ -1,4 +1,4 @@
-# oldgdms_pfile_downloader
+# the Old-GDMS P-file Downloader
 
 ## Requirement
 - python3 (3.9)
@@ -27,3 +27,6 @@ sed -i 's/ -\./-0\./g' ????????.???
 - ![](pics/04_2_list_format.png)
 - ![](pics/05_set_output_dir.png)
 - ![](pics/06_downloading.png)
+
+## Known Problems
+Because GDMS website will still response HTTP 200 when Pfile search error occurs.  Please manually check your downloaded P-file format is correct by `file ????????.???` (in Unix-like system)
