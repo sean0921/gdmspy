@@ -18,3 +18,11 @@ dos2unix *
 sed -i 's/ \./0\./g' ????????.???  
 sed -i 's/ -\./-0\./g' ????????.???                      
 ```
+
+## Demo
+![](pics/01_enter_id.png)
+![](pics/02_enter_passwd.png)
+![](pics/03_select_network.png)
+![](pics/04_1_select_list.png)
+![](pics/04_2_list_format.png)
+![](pics/05_set_output_dir.png)
