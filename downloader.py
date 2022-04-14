@@ -9,6 +9,7 @@ from zenipy.zenipy import entry, zlist, password
 ## TODO: use pycurl
 import requests
 import urllib.parse
+from pathlib import Path
 
 def_cookie='PHPSESSID=54c29e8976cd2c8ebc435bcbc29943e8; lang=tw; TS01d26e96=0107dddfef06b850d868747c7b516541945b9115d469082c34841781c36e50d7950a4b10761d89d768898e9203622a7cdc989faf64'
 def_list_filename = 'request_list.txt'
@@ -60,6 +61,8 @@ output_dir = entry(
 if None in (download_baseurl, list_filename, user_agent, seis_network, output_dir):
     print('Incomplete inputs.  Abort!')
     exit(1)
+
+Path(output_dir).mkdir(parents=True, exist_ok=True)
 
 baseurl='https://gdms.cwb.gov.tw/download.php'
 
