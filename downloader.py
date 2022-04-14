@@ -14,8 +14,8 @@ def_list_filename = 'request_list.txt'
 def_user_agent='Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0'
 def_output_dir = 'output'
 
-baseurl='https://gdms.cwb.gov.tw/download.php'
-cwb_urltype = {'CWBSN': '?dest_path=//gdms-file1/GDMS/s13/Event', 'CWB24': '?dest_path=//gdms-file1/GDMS/cwb24/Event'}
+baseurl='https://gdms.cwb.gov.tw/'
+cwb_urltype = {'CWBSN': 'download.php?dest_path=//gdms-file1/GDMS/s13/Event', 'CWB24': 'download.php?dest_path=//gdms-file1/GDMS/cwb24/Event'}
 
 ########################## Zenipy config
 
@@ -51,7 +51,7 @@ output_dir = entry(
     title='Output Dir',
     width=330, height=120, timeout=None
 )
-if None in (download_baseurl, list_filename, user_agent, seis_network, output_dir):
+if None in (gdms_id, gdms_passwd, list_filename, seis_network, output_dir):
     print('Incomplete inputs.  Abort!')
     exit(1)
 
@@ -73,12 +73,12 @@ if response.status_code == 200:
 ses_cookie = f'PHPSESSID={ses_cookie_dict["PHPSESSID"]}; lang=tw; TS01d26e96={ses_cookie_dict["TS01d26e96"]}'
 
 post_result = requests.post(
-    'https://gdms.cwb.gov.tw/login/member_login.php',
+    f'{baseurl}/login/member_login.php',
     data = f'account={gdms_id}&pass={gdms_passwd}&x=0&y=0',
     headers = {
         'User-Agent': f'User-Agent: {def_user_agent}',
         'Cookie': f'{ses_cookie}',
-        'Referer': 'https://gdms.cwb.gov.tw/index.php',
+        'Referer': f'{baseurl}/index.php',
         'Sec-Fetch-Site': 'same-origin',
         'Content-Type': 'application/x-www-form-urlencoded'
     } 
