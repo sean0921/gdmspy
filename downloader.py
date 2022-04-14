@@ -6,19 +6,18 @@
 #     https://gdms.cwb.gov.tw/download.php?dest_path=//gdms-file1/GDMS/cwb24/Event/2017/02/&file=14101712.P17&sys=CWB24
 
 from zenipy.zenipy import entry, zlist, password
-## TODO: use pycurl
-import requests
+import requests  ## TODO: use pycurl
 import urllib.parse
 from pathlib import Path
 
-def_cookie='PHPSESSID=54c29e8976cd2c8ebc435bcbc29943e8; lang=tw; TS01d26e96=0107dddfef06b850d868747c7b516541945b9115d469082c34841781c36e50d7950a4b10761d89d768898e9203622a7cdc989faf64'
 def_list_filename = 'request_list.txt'
 def_user_agent='Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0'
 def_output_dir = 'output'
 
-baseurl_format_1 = '?dest_path=//gdms-file1/GDMS/s13/Event'
-baseurl_format_2 = '?dest_path=//gdms-file1/GDMS/cwb24/Event'
+baseurl='https://gdms.cwb.gov.tw/download.php'
 cwb_urltype = {'CWBSN': '?dest_path=//gdms-file1/GDMS/s13/Event', 'CWB24': '?dest_path=//gdms-file1/GDMS/cwb24/Event'}
+
+########################## Zenipy config
 
 gdms_id = entry(
     text='Please Enter Your GDMS ID',
@@ -32,8 +31,6 @@ gdms_passwd = password(
     title='GDMS Password',
     width=330, height=120, timeout=None
 )
-gdms_id = urllib.parse.quote(gdms_id, safe='')
-gdms_passwd = urllib.parse.quote(gdms_passwd, safe='')
 seis_network = zlist(
     ['CWB Seis Network'],
     ['CWB24','CWBSN'],
@@ -42,29 +39,32 @@ seis_network = zlist(
     title='SeisNetwork',
     width=400, height=200, timeout=None
 )[0]
-download_baseurl = cwb_urltype[f'{seis_network}']
 list_filename = entry(
     text='Please Enter List Filname',
     placeholder=f'{def_list_filename}',
     title='Pfile List',
     width=330, height=120, timeout=None
 )
-user_agent = def_user_agent
-
 output_dir = entry(
     text='Please Enter Output Directory',
     placeholder=f'{def_output_dir}',
     title='Output Dir',
     width=330, height=120, timeout=None
 )
-
 if None in (download_baseurl, list_filename, user_agent, seis_network, output_dir):
     print('Incomplete inputs.  Abort!')
     exit(1)
 
+gdms_id = urllib.parse.quote(gdms_id, safe='')
+gdms_passwd = urllib.parse.quote(gdms_passwd, safe='')
+download_baseurl = cwb_urltype[f'{seis_network}']
+user_agent = def_user_agent
+
+######################### end of Zenipy config
+
 Path(output_dir).mkdir(parents=True, exist_ok=True)
 
-baseurl='https://gdms.cwb.gov.tw/download.php'
+######################### Login and activate session and cookies
 
 session = requests.Session()
 response = session.get(baseurl)
@@ -83,6 +83,8 @@ post_result = requests.post(
         'Content-Type': 'application/x-www-form-urlencoded'
     } 
 )
+
+################## Download files
 
 if post_result.status_code == 200:
     headers = {'User-Agent': f'User-Agent: {user_agent}', 'Cookie': f'{ses_cookie}'}
