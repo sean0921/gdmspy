@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "oldgdms_pfile_downloader"
+name = "gdmspy"
 version = "0.1.0"
 description = "Old GDMS Website Picking File Downloadler"
 authors = ["Sean Ho <sean.li.shin.ho@gmail.com>"]

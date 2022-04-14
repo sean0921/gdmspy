@@ -1,4 +1,4 @@
-# the Old-GDMS P-file Downloader
+# GDM*Spy*: the Old-GDMS P-file Downloader
 
 ## Requirement
 - python3 (3.9)
