@@ -1,15 +1,41 @@
 # GDM*Spy*: the Old-GDMS P-file Downloader
 
+This program can help you login Old-GDMS system, and get Picking-file by filename in correct format you give.
+If you have Earthquake Catalog from CWB Old-GDMS system, This program helps you a lot when you want to batch download multiple P-files.
+
+* Note: If your research agency has archived several years of data, we encourage you to use that, preventing make too much load to that server.
+
 ## Requirement
-- python3 (3.9)
-- gtk3 (PyGObject 3.42.0)
+- Poetry (*1.2.0b1*)
+- python3 (>=3.8)
+- gtk3 (PyGObject >=3.38.0)
 - zenipy (0.1.5)
-- requests (2.25.1)
-- urllib3 (1.26.5)
+- requests (>=2.25.1)
+- urllib3 (>=1.26.5)
+
+## Installation (Dependencies)
+### System package first
+```bash
+sudo apt install python3-gi python3-requests python3-urllib3 libgtk-3-dev
+pip install --user zenipy
+```
+
+### System pacakge and Poetry
+```bash
+sudo apt install python3-gi libgtk-3-dev
+cd $PROJECT_ROOT   ## enter your project top dir path
+poetry install
+```
 
 ## Usage
+Installed by system pacakge fist:
 ```bash
 python3 downloader.py
+```
+
+Installed by Poetry:
+```bash
+poetry run python3 downloader.py
 ```
 
 ## post processing
