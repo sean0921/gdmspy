@@ -6,7 +6,6 @@ authors = ["Sean Ho <sean.li.shin.ho@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.7,<3.10"
-python3-gi = "*"
 zenipy = "*"
 requests = "*"
 urllib3 = "*"
