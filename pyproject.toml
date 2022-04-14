@@ -3,6 +3,9 @@ name = "gdmspy"
 version = "0.1.0"
 description = "Old GDMS Website Picking File Downloadler"
 authors = ["Sean Ho <sean.li.shin.ho@gmail.com>"]
+packages = [
+    { include = "src" }
+]
 
 [tool.poetry.dependencies]
 python = ">=3.7,<3.10"
