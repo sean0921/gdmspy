@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 
-from zenipy.zenipy import entry, zlist
+# Output URLs should be like:
+#     https://gdms.cwb.gov.tw/download.php?dest_path=//gdms-file1/GDMS/s13/Event/1991/03/&file=03120603.P91&sys=CWBSN&datev=1991-03-12%2006:04:06
+#     https://gdms.cwb.gov.tw/download.php?dest_path=//gdms-file1/GDMS/s13/Event/1991/03/&file=03120603.P91&sys=CWBSN
+#     https://gdms.cwb.gov.tw/download.php?dest_path=//gdms-file1/GDMS/cwb24/Event/2017/02/&file=14101712.P17&sys=CWB24
+
+from zenipy.zenipy import entry, zlist, password
 ## TODO: use pycurl
 import requests
 
-## TODO: make input
 def_cookie='PHPSESSID=54c29e8976cd2c8ebc435bcbc29943e8; lang=tw; TS01d26e96=0107dddfef06b850d868747c7b516541945b9115d469082c34841781c36e50d7950a4b10761d89d768898e9203622a7cdc989faf64'
 def_list_filename = 'request_list.txt'
 def_user_agent='Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0'
@@ -12,31 +16,18 @@ def_output_dir = 'output'
 
 baseurl_format_1 = '?dest_path=//gdms-file1/GDMS/s13/Event'
 baseurl_format_2 = '?dest_path=//gdms-file1/GDMS/cwb24/Event'
+cwb_urltype = {'CWBSN': '?dest_path=//gdms-file1/GDMS/s13/Event', 'CWB24': '?dest_path=//gdms-file1/GDMS/cwb24/Event'}
 
-cookie = entry(
-    text='Please Enter Your Cookie',
-    placeholder=f'{def_cookie}',
-    title='Cookie',
-    width=330, height=120, timeout=None
-)  
-download_baseurl = zlist(
-    ['CWB URL Type'],
-    ['?dest_path=//gdms-file1/GDMS/cwb24/Event','?dest_path=//gdms-file1/GDMS/s13/Event'],
-    print_columns=None,
-    text='Please Select Your Baseurl',
-    title='Baseurl',
-    width=400, height=200, timeout=None
-)[0]
-list_filename = entry(
-    text='Please Enter List Filname',
-    placeholder=f'{def_list_filename}',
-    title='Pfile List',
+gdms_id = entry(
+    text='Please Enter Your GDMS ID',
+    placeholder=f'yourid',
+    title='GDMS ID',
     width=330, height=120, timeout=None
 )
-user_agent = entry(
-    text='Please Enter Your User Agent',
-    placeholder=f'{def_user_agent}',
-    title='User Agent',
+gdms_passwd = password(
+    text='Please Enter Your GDMS Password',
+    placeholder=f'yourid',
+    title='GDMS Password',
     width=330, height=120, timeout=None
 )
 seis_network = zlist(
@@ -47,6 +38,15 @@ seis_network = zlist(
     title='SeisNetwork',
     width=400, height=200, timeout=None
 )[0]
+download_baseurl = cwb_urltype[f'{seis_network}']
+list_filename = entry(
+    text='Please Enter List Filname',
+    placeholder=f'{def_list_filename}',
+    title='Pfile List',
+    width=330, height=120, timeout=None
+)
+user_agent = def_user_agent
+
 output_dir = entry(
     text='Please Enter Output Directory',
     placeholder=f'{def_output_dir}',
@@ -54,32 +54,47 @@ output_dir = entry(
     width=330, height=120, timeout=None
 )
 
-if None in (cookie, download_baseurl, list_filename, user_agent, seis_network, output_dir):
+if None in (download_baseurl, list_filename, user_agent, seis_network, output_dir):
     print('Incomplete inputs.  Abort!')
     exit(1)
 
 baseurl='https://gdms.cwb.gov.tw/download.php'
-headers = {'User-Agent': f'User-Agent: {user_agent}', 'Cookie': f'{cookie}'}
 
-f=open(f'{list_filename}')
-lines=f.readlines()
-f.close()
-for i in lines:
-    request_filename=i[0:12]
-    pfile=request_filename
-    year=( 19 + int( int(pfile[0:2]) / 12 ) )*100 + int(pfile[10:12])
-    month=int(pfile[0:2])%12
-    day=int(pfile[2:4])
-    url=f'{baseurl}{download_baseurl}/{year}/{month:02d}/&file={pfile:12s}&sys={seis_network}'
-    r=requests.get(f'{url}', headers=headers)
-    if r.ok:
-        ## TODO: make input
-        with open(f'{output_dir}/{request_filename}','w') as c:
-            c.write(r.text)
-        print(f'Downloaded {request_filename}!')
+session = requests.Session()
+response = session.get(baseurl)
+if response.status_code == 200:
+    ses_cookie_dict = session.cookies.get_dict()
+ses_cookie = f'PHPSESSID={ses_cookie_dict["PHPSESSID"]}; lang=tw; TS01d26e96={ses_cookie_dict["TS01d26e96"]}'
 
-# Output URLs should be like:
-#     https://gdms.cwb.gov.tw/download.php?dest_path=//gdms-file1/GDMS/s13/Event/1991/03/&file=03120603.P91&sys=CWBSN&datev=1991-03-12%2006:04:06
-#     https://gdms.cwb.gov.tw/download.php?dest_path=//gdms-file1/GDMS/s13/Event/1991/03/&file=03120603.P91&sys=CWBSN
-#     https://gdms.cwb.gov.tw/download.php?dest_path=//gdms-file1/GDMS/cwb24/Event/2017/02/&file=14101712.P17&sys=CWB24
-  
+post_result = requests.post(
+    'https://gdms.cwb.gov.tw/login/member_login.php',
+    data = f'account={gdms_id}&pass={gdms_passwd}&x=0&y=0',
+    headers = {
+        'User-Agent': f'User-Agent: {def_user_agent}',
+        'Cookie': f'{ses_cookie}',
+        'Referer': 'https://gdms.cwb.gov.tw/index.php',
+        'Sec-Fetch-Site': 'same-origin',
+        'Content-Type': 'application/x-www-form-urlencoded'
+    } 
+)
+
+if post_result.status_code == 200:
+    headers = {'User-Agent': f'User-Agent: {user_agent}', 'Cookie': f'{ses_cookie}'}
+
+    f=open(f'{list_filename}')
+    lines=f.readlines()
+    f.close()
+    for i in lines:
+        request_filename=i[0:12]
+        pfile=request_filename
+        year=( 19 + int( int(pfile[0:2]) / 12 ) )*100 + int(pfile[10:12])
+        month=int(pfile[0:2])%12
+        day=int(pfile[2:4])
+        url=f'{baseurl}{download_baseurl}/{year}/{month:02d}/&file={pfile:12s}&sys={seis_network}'
+        print(url)
+        r=requests.get(f'{url}', headers=headers)
+        if r.status_code == 200:
+            ## TODO: make input
+            with open(f'{output_dir}/{request_filename}','w') as c:
+                c.write(r.text)
+            print(f'Downloaded {request_filename}!')
