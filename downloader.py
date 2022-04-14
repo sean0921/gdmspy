@@ -8,6 +8,7 @@
 from zenipy.zenipy import entry, zlist, password
 ## TODO: use pycurl
 import requests
+import urllib.parse
 
 def_cookie='PHPSESSID=54c29e8976cd2c8ebc435bcbc29943e8; lang=tw; TS01d26e96=0107dddfef06b850d868747c7b516541945b9115d469082c34841781c36e50d7950a4b10761d89d768898e9203622a7cdc989faf64'
 def_list_filename = 'request_list.txt'
@@ -30,6 +31,8 @@ gdms_passwd = password(
     title='GDMS Password',
     width=330, height=120, timeout=None
 )
+gdms_id = urllib.parse.quote(gdms_id, safe='')
+gdms_passwd = urllib.parse.quote(gdms_passwd, safe='')
 seis_network = zlist(
     ['CWB Seis Network'],
     ['CWB24','CWBSN'],
