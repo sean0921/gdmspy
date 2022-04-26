@@ -7,6 +7,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "chardet"
+version = "4.0.0"
+description = "Universal encoding detector for Python 2 and 3"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[[package]]
 name = "charset-normalizer"
 version = "2.0.12"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
@@ -32,6 +40,26 @@ description = "Python interface for cairo"
 category = "main"
 optional = false
 python-versions = ">=3.7"
+
+[[package]]
+name = "pycurl"
+version = "7.45.1"
+description = "PycURL -- A Python Interface To The cURL library"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "pycurl-requests"
+version = "0.2.1"
+description = "A Requests-compatible interface for pycURL"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+chardet = "*"
+pycurl = "*"
 
 [[package]]
 name = "pygobject"
@@ -86,12 +114,16 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<3.10"
-content-hash = "8cdc32170ede7b7b0f406ac1c75c227168dc26d69a2d800911541ce4338bd570"
+content-hash = "5803ac59bea9fe7922e061416d353267e4efb1b9304902e58f850049a1061893"
 
 [metadata.files]
 certifi = [
     {file = "certifi-2021.10.8-py2.py3-none-any.whl", hash = "sha256:d62a0163eb4c2344ac042ab2bdf75399a71a2d8c7d47eac2e2ee91b9d6339569"},
     {file = "certifi-2021.10.8.tar.gz", hash = "sha256:78884e7c1d4b00ce3cea67b44566851c4343c120abd683433ce934a68ea58872"},
+]
+chardet = [
+    {file = "chardet-4.0.0-py2.py3-none-any.whl", hash = "sha256:f864054d66fd9118f2e67044ac8981a54775ec5b67aed0441892edb553d21da5"},
+    {file = "chardet-4.0.0.tar.gz", hash = "sha256:0d6f53a15db4120f2b08c94f11e7d93d2c911ee118b6b30a04ec3ee8310179fa"},
 ]
 charset-normalizer = [
     {file = "charset-normalizer-2.0.12.tar.gz", hash = "sha256:2857e29ff0d34db842cd7ca3230549d1a697f96ee6d3fb071cfa6c7393832597"},
@@ -111,6 +143,13 @@ pycairo = [
     {file = "pycairo-1.21.0-cp39-cp39-win32.whl", hash = "sha256:6d37375aab9f2bb6136f076c19815d72108383baae89fbc0d6cb8e5092217d02"},
     {file = "pycairo-1.21.0-cp39-cp39-win_amd64.whl", hash = "sha256:26b72b813c6f9d495f71057eab89c13e70a21c92360e9265abc049e0a931fa39"},
     {file = "pycairo-1.21.0.tar.gz", hash = "sha256:251907f18a552df938aa3386657ff4b5a4937dde70e11aa042bc297957f4b74b"},
+]
+pycurl = [
+    {file = "pycurl-7.45.1.tar.gz", hash = "sha256:a863ad18ff478f5545924057887cdae422e1b2746e41674615f687498ea5b88a"},
+]
+pycurl-requests = [
+    {file = "pycurl-requests-0.2.1.tar.gz", hash = "sha256:0e9af8a7aea5fcddd0db9a0e4901358e72bae4ac993e044482fbaaa0ca30e3ae"},
+    {file = "pycurl_requests-0.2.1-py3-none-any.whl", hash = "sha256:760afb9d2d9f7e694d37d064286f483e4740add38d2a4f91a8e9389ca0551bcb"},
 ]
 pygobject = [
     {file = "PyGObject-3.42.1.tar.gz", hash = "sha256:80d6a3ad1630e9d1edf31b9e9fad9a894c57e18545a3c95ef0044ac4042b8620"},

@@ -13,6 +13,7 @@ zenipy = "*"
 requests = "*"
 urllib3 = "*"
 PyGObject = "*"
+pycurl-requests = "^0.2.1"
 
 [tool.poetry.dev-dependencies]
 

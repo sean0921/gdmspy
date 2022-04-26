@@ -6,7 +6,7 @@
 #     https://gdms.cwb.gov.tw/download.php?dest_path=//gdms-file1/GDMS/cwb24/Event/2017/02/&file=14101712.P17&sys=CWB24
 
 from zenipy.zenipy import entry, zlist, password
-import requests  ## TODO: use pycurl
+import pycurl_requests as requests
 import urllib.parse
 from pathlib import Path
 
@@ -66,11 +66,13 @@ Path(output_dir).mkdir(parents=True, exist_ok=True)
 
 ######################### Login and activate session and cookies
 
+# fetch the cookie
 session = requests.Session()
-response = session.get(baseurl)
-if response.status_code == 200:
-    ses_cookie_dict = session.cookies.get_dict()
-ses_cookie = f'PHPSESSID={ses_cookie_dict["PHPSESSID"]}; lang=tw; TS01d26e96={ses_cookie_dict["TS01d26e96"]}'
+pre_response = session.get(baseurl)
+if pre_response.status_code != 200:
+    print(f'{pre_response.status_code}!')
+    exit(1)
+ses_cookie = pre_response.headers['Set-Cookie']
 
 post_result = requests.post(
     f'{baseurl}/login/member_login.php',
@@ -86,9 +88,11 @@ post_result = requests.post(
 
 ################## Download files
 
-if post_result.status_code == 200:
+if post_result.status_code != 200:
+    print(f'{response.status_code}!')
+    exit(1)
+else:
     headers = {'User-Agent': f'User-Agent: {user_agent}', 'Cookie': f'{ses_cookie}'}
-
     f=open(f'{list_filename}')
     lines=f.readlines()
     f.close()
@@ -101,8 +105,10 @@ if post_result.status_code == 200:
         url=f'{baseurl}{download_baseurl}/{year}/{month:02d}/&file={pfile:12s}&sys={seis_network}'
         print(url)
         r=requests.get(f'{url}', headers=headers)
-        if r.status_code == 200:
-            ## TODO: make input
+        if r.status_code != 200:
+            print(f'{response.status_code}!')
+            exit(1)
+        else:
             with open(f'{output_dir}/{request_filename}','w') as c:
                 c.write(r.text)
             print(f'Downloaded {request_filename}!')
