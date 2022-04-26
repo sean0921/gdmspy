@@ -59,3 +59,6 @@ sed -i 's/ -\./-0\./g' ????????.???
 
 ## Known Problems
 Because GDMS website will still response HTTP 200 when Pfile search error occurs.  Please manually check your downloaded P-file format is correct by `file ????????.???` (in Unix-like system)
+
+## TODO
+- Auto Choose which network to use: CWB24 or CWBSN by years of data
