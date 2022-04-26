@@ -18,7 +18,7 @@ If you have Earthquake Catalog from CWB Old-GDMS system, This program helps you 
 - ![](pics/06_downloading.png)
 
 ## Requirement
-- Poetry (*1.2.0b1*)
+- Poetry (>=1.1.13)
 - python3 (>=3.8)
 - gtk3 (PyGObject >=3.38.0)
 - zenipy (0.1.5)
@@ -34,7 +34,7 @@ pip install --user zenipy
 
 ### System pacakge and Poetry
 ```bash
-sudo apt install python3-gi libgtk-3-dev
+sudo apt install libgtk-3-dev
 cd $PROJECT_ROOT   ## enter your project top dir path
 poetry install
 ```
