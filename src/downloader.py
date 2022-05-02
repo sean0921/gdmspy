@@ -89,7 +89,7 @@ post_result = requests.post(
 ################## Download files
 
 if post_result.status_code != 200:
-    print(f'{response.status_code}!')
+    print(f'{post_result.status_code}!')
     exit(1)
 else:
     headers = {'User-Agent': f'User-Agent: {user_agent}', 'Cookie': f'{ses_cookie}'}
@@ -106,7 +106,7 @@ else:
         print(url)
         r=requests.get(f'{url}', headers=headers)
         if r.status_code != 200:
-            print(f'{response.status_code}!')
+            print(f'{post_result.status_code}!')
             exit(1)
         else:
             with open(f'{output_dir}/{request_filename}','w') as c:
