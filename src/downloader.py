@@ -45,16 +45,16 @@ def gen_user_config() -> Tuple[str, str, str, str, str]:
         title='GDMS Password',
         width=330, height=120, timeout=None
     )
-    seis_network = zlist(
+    seis_network_info = zlist(
         ['CWB Seis Network'],
         ['CWB24','CWBSN'],
         print_columns=None,
         text='Please Select Your CWB Network',
         title='SeisNetwork',
         width=400, height=200, timeout=None
-    )[0]
+    )
     list_filename = entry(
-        text='Please Enter List Filname',
+        text='Please Enter List Filename',
         placeholder=f'{default_list_filename}',
         title='Pfile List',
         width=330, height=120, timeout=None
@@ -65,12 +65,13 @@ def gen_user_config() -> Tuple[str, str, str, str, str]:
         title='Output Dir',
         width=330, height=120, timeout=None
     )
-    if None in (gdms_id, gdms_passwd, list_filename, seis_network, output_dir):
+    if None in (gdms_id, gdms_passwd, seis_network_info, list_filename, output_dir):
         print('Incomplete inputs.  Abort!')
         exit(1)
 
     gdms_id = urllib.parse.quote(gdms_id, safe='')
     gdms_passwd = urllib.parse.quote(gdms_passwd, safe='')
+    seis_network = seis_network_info[0]
 
 
     Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -114,7 +115,7 @@ def main():
         month=int(pfile[0:2])%12
         day=int(pfile[2:4])
         url=f'{baseurl}{download_baseurl}/{year}/{month:02d}/&file={pfile:12s}&sys={seis_network}'
-        print(url)
+        print(f'Download URL: {url}')
         r=requests.get(f'{url}', headers=headers)
         if r.status_code != 200:
             print(f'{post_result.status_code}!')
@@ -127,9 +128,9 @@ def main():
             if re.match('^HTML document', download_filetype):
                 print(f'Downloaded file may broken! ({request_filename})')
                 send2trash(downloaded_filepath)
-                print(f'Moved {request_filename} to Recycle Bin!)')
+                print(f'Moved {request_filename} to Recycle Bin!')
                 continue
-            print(f'Downloaded {request_filename}!')
+            print(f'{request_filename} downloaded!')
 
 if __name__ == '__main__':
     main()
