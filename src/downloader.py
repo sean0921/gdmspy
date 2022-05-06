@@ -10,7 +10,9 @@ from zenipy.zenipy import entry, zlist, password
 import pycurl_requests as requests
 import urllib.parse
 from pathlib import Path
-
+from send2trash import send2trash
+import magic
+import re
 
 default_user_agent='Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0'
 baseurl='https://gdms.cwb.gov.tw/'
@@ -118,8 +120,15 @@ def main():
             print(f'{post_result.status_code}!')
             exit(1)
         else:
-            with open(f'{output_dir}/{request_filename}','w') as c:
+            downloaded_filepath = f'{output_dir}/{request_filename}'
+            with open(f'{downloaded_filepath}','w') as c:
                 c.write(r.text)
+            download_filetype = magic.from_file(f'{downloaded_filepath}')
+            if re.match('^HTML document', download_filetype):
+                print(f'Downloaded file may broken! ({request_filename})')
+                send2trash(downloaded_filepath)
+                print(f'Moved {request_filename} to Recycle Bin!)')
+                continue
             print(f'Downloaded {request_filename}!')
 
 if __name__ == '__main__':
