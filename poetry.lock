@@ -106,7 +106,7 @@ pycurl = "*"
 
 [[package]]
 name = "pygobject"
-version = "3.42.1"
+version = "3.42.2"
 description = "Python bindings for GObject Introspection"
 category = "main"
 optional = false
@@ -258,9 +258,7 @@ pycurl-requests = [
     {file = "pycurl-requests-0.2.1.tar.gz", hash = "sha256:0e9af8a7aea5fcddd0db9a0e4901358e72bae4ac993e044482fbaaa0ca30e3ae"},
     {file = "pycurl_requests-0.2.1-py3-none-any.whl", hash = "sha256:760afb9d2d9f7e694d37d064286f483e4740add38d2a4f91a8e9389ca0551bcb"},
 ]
-pygobject = [
-    {file = "PyGObject-3.42.1.tar.gz", hash = "sha256:80d6a3ad1630e9d1edf31b9e9fad9a894c57e18545a3c95ef0044ac4042b8620"},
-]
+pygobject = []
 pyparsing = [
     {file = "pyparsing-3.0.9-py3-none-any.whl", hash = "sha256:5026bae9a10eeaefb61dab2f09052b9f4307d44aee4eda64b309723d8d206bbc"},
     {file = "pyparsing-3.0.9.tar.gz", hash = "sha256:2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"},
