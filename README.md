@@ -1,3 +1,5 @@
+* Note: Because "Old-GDMS" System is closed by CW"A", although new GDMS system is not that perfect, we still move forward and archive this repo. :)
+
 # GDM*Spy*: the Old-GDMS P-file Downloader
 
 This program can help you login Old-GDMS system, and get Picking-file by filename in correct format you give.
